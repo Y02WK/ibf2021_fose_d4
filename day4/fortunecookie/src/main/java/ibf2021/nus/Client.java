@@ -33,7 +33,7 @@ public class Client {
         if (inputStream != System.in) {
             this.testInput(inputStream);
         } else {
-            System.err.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
+            System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
             while (true) {
                 String input = this.getInput(inputStream);
                 if (!this.processInput(input.trim())) {

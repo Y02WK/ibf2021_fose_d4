@@ -42,6 +42,7 @@ public class ConnectionHandler implements Runnable {
         DataInputStream dis = new DataInputStream(bis);
         while (is.available() == 0) {
             String message = dis.readUTF();
+            System.out.println(message + "from client");
             processRequest(dos, message);
         }
     }
@@ -50,6 +51,7 @@ public class ConnectionHandler implements Runnable {
         switch (request) {
             case "get-cookie":
                 String response = cookieJar.getCookie();
+                System.out.println(response);
                 sendToClient(dos, response);
                 return;
             case "close":
