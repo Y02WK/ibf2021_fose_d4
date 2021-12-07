@@ -22,7 +22,7 @@ public class Client {
         try {
             openSocket();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            System.err.println("Error. Unable to connect to the server. Please check if the host and port are valid.");
         } catch (IOException e) {
             e.printStackTrace();
         }
