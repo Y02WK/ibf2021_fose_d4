@@ -37,13 +37,12 @@ public class App {
             String[] argsParts = args[1].split(":");
             try {
                 Client client = new Client(argsParts[0], Integer.parseInt(argsParts[1]));
+                System.out.println("Client successfully started.");
                 client.start(System.in);
             } catch (NumberFormatException e) {
                 System.err.println("Error. Please enter a valid port.");
                 return;
             }
-            System.out.println("Client successfully started.");
-
         }
     }
 }
