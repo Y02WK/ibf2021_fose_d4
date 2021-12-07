@@ -43,7 +43,7 @@ public class Server {
             // ConnectionHandler worker = new ConnectionHandler(socket, cookieJar);
             System.out.println("Sending to threadPool");
             // threadPool.execute(worker);
-            threadPool.execute(() -> new ConnectionHandler(socket, cookieJar));
+            threadPool.execute(() -> new ConnectionHandler(socket, cookieJar).run());
         }
     }
 
