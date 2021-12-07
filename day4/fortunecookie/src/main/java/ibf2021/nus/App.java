@@ -22,10 +22,9 @@ public class App {
             System.out.println("Server started successfully.");
             server.startConnection();
         } else if (args[0].equalsIgnoreCase("fc.client")) {
-            Client client = new Client(args[1], Integer.parseInt(args[2]));
+            String[] argsParts = args[1].split(":");
+            Client client = new Client(argsParts[0], Integer.parseInt(argsParts[1]));
             System.out.println("Client successfully started.");
-            client.sendAndReceive("get-cookie");
-            client.sendAndReceive("cookie-text");
         }
     }
 }
