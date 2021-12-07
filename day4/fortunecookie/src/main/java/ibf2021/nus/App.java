@@ -25,6 +25,7 @@ public class App {
             String[] argsParts = args[1].split(":");
             Client client = new Client(argsParts[0], Integer.parseInt(argsParts[1]));
             System.out.println("Client successfully started.");
+            client.start(System.in);
         }
     }
 }
