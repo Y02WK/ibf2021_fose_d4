@@ -98,9 +98,9 @@ public class Client {
             case "get-cookie":
                 this.sendToServer(input);
                 System.out.println("Getting your fortune cookie. Enter 'cookie-text' to open the cookie");
+                this.fortuneMessage = receiveFromServer();
                 break;
             case "cookie-text":
-                this.fortuneMessage = receiveFromServer();
                 System.out.println(fortuneMessage);
                 System.out.println("Enter 'get-cookie' to get another cookie, or enter 'close' to exit.");
                 break;
