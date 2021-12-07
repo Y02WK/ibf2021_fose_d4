@@ -42,7 +42,6 @@ public class ConnectionHandler implements Runnable {
         DataInputStream dis = new DataInputStream(bis);
         while (is.available() == 0) {
             String message = dis.readUTF();
-            System.out.println(message + "from client");
             processRequest(dos, message);
         }
     }
