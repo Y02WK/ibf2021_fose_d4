@@ -40,10 +40,8 @@ public class Server {
             System.out.println("Waiting for socket connection");
             Socket socket = serverSocket.accept();
             System.out.println("Connection from " + socket + "!");
-            // ConnectionHandler worker = new ConnectionHandler(socket, cookieJar);
             System.out.println("Sending to threadPool");
-            // threadPool.execute(worker);
-            threadPool.execute(() -> new ConnectionHandler(socket, cookieJar).run());
+            threadPool.execute(new ConnectionHandler(socket, cookieJar));
         }
     }
 
