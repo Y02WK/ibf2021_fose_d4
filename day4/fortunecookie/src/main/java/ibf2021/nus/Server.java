@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 public class Server {
     public static void main(String[] args) throws IOException {
         Server server = new Server(8888, Path.of(
-                "/Users/waikinyong/Documents/NUS_ISS/Fundamentals_of_Software_Engineering/Day_4/day4/fortunecookie/src/cookie_file.txt"));
+                "src/cookie_file.txt"));
         server.startServer();
         server.startConnection();
     }

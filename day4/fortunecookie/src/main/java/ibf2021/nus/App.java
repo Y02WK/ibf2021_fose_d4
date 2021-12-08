@@ -24,7 +24,7 @@ public class App {
                 return;
             }
             String cookieJar = args[2];
-            Path cookieJarFile = Path.of(cookieJar);
+            Path cookieJarFile = Path.of("./" + cookieJar);
             Server server = new Server(serverPort, cookieJarFile);
             server.startServer();
             System.out.println("Server started successfully.");
