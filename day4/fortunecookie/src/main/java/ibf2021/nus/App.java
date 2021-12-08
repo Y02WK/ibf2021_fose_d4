@@ -19,6 +19,10 @@ public class App {
                 return;
             }
             int serverPort = Integer.parseInt(args[1]);
+            if (serverPort < 1024 && serverPort > 65535) {
+                System.err.println("Invalid port number.");
+                return;
+            }
             String cookieJar = args[2];
             Path cookieJarFile = Path.of(cookieJar);
             Server server = new Server(serverPort, cookieJarFile);
@@ -35,6 +39,10 @@ public class App {
                 return;
             }
             String[] argsParts = args[1].split(":");
+            if (Integer.parseInt(argsParts[1]) < 1024 && Integer.parseInt(argsParts[1]) > 65535) {
+                System.err.println("Invalid port number.");
+                return;
+            }
             try {
                 Client client = new Client(argsParts[0], Integer.parseInt(argsParts[1]));
                 System.out.println("Client successfully started.");
