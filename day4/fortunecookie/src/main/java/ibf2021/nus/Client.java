@@ -22,7 +22,7 @@ public class Client {
         try {
             openSocket();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            System.err.println("Error. Unable to connect to the server. Please check if the host and port are valid.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,7 +33,7 @@ public class Client {
         if (inputStream != System.in) {
             this.testInput(inputStream);
         } else {
-            System.err.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
+            System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
             while (true) {
                 String input = this.getInput(inputStream);
                 if (!this.processInput(input.trim())) {
@@ -98,9 +98,9 @@ public class Client {
             case "get-cookie":
                 this.sendToServer(input);
                 System.out.println("Getting your fortune cookie. Enter 'cookie-text' to open the cookie");
+                this.fortuneMessage = receiveFromServer();
                 break;
             case "cookie-text":
-                this.fortuneMessage = receiveFromServer();
                 System.out.println(fortuneMessage);
                 System.out.println("Enter 'get-cookie' to get another cookie, or enter 'close' to exit.");
                 break;
@@ -111,7 +111,6 @@ public class Client {
             default:
                 System.out.println("Command not recognized. Please enter only get-cookie or cookie-text.");
         }
-
         return true;
     }
 }
