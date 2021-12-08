@@ -17,6 +17,7 @@ public class Cookie {
     }
 
     protected ArrayList<String> loadCookies() {
+        // Loads all fortunes from the fortunecookie file into an ArrayList
         String item;
         ArrayList<String> cookieLoader = new ArrayList<String>();
         try {
@@ -26,13 +27,14 @@ public class Cookie {
             }
             reader.close();
         } catch (IOException e) {
-            System.err.println(e);
+            System.err.println("Error reading file.");
         }
 
         return cookieLoader;
     }
 
     protected String getCookie() {
+        // Returns a random fortune from the cookie ArrayList.
         return cookieStore.get(ThreadLocalRandom.current().nextInt(cookieStore.size()));
     }
 
