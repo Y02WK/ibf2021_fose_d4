@@ -9,12 +9,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class ConnectionHandler implements Runnable {
+public class CookieClientHandler implements Runnable {
     private Socket socket;
     private Cookie cookieJar;
 
     // constructor
-    public ConnectionHandler(Socket socket, Cookie cookieJar) {
+    public CookieClientHandler(Socket socket, Cookie cookieJar) {
         this.socket = socket;
         this.cookieJar = cookieJar;
     }

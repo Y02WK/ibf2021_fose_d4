@@ -41,7 +41,7 @@ public class Server {
             Socket socket = serverSocket.accept();
             System.out.println("Connection from " + socket + "!");
             System.out.println("Sending to threadPool");
-            threadPool.execute(new ConnectionHandler(socket, cookieJar));
+            threadPool.execute(new CookieClientHandler(socket, cookieJar));
         }
     }
 
