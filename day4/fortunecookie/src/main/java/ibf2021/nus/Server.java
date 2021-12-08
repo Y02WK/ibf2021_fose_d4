@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
     public static void main(String[] args) throws IOException {
-        Server server = new Server(8888, Paths.get(
+        Server server = new Server(8888, Path.of(
                 "/Users/waikinyong/Documents/NUS_ISS/Fundamentals_of_Software_Engineering/Day_4/day4/fortunecookie/src/cookie_file.txt"));
         server.startServer();
         server.startConnection();
