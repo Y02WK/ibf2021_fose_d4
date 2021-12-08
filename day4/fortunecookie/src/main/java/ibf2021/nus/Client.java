@@ -111,7 +111,6 @@ public class Client {
             default:
                 System.out.println("Command not recognized. Please enter only get-cookie or cookie-text.");
         }
-
         return true;
     }
 }
