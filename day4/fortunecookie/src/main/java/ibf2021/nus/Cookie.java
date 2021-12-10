@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cookie {
-    private Path cookieJar;
-    private ArrayList<String> cookieStore;
+    private Path cookieJarPath;
+    private ArrayList<String> cookieJar;
 
-    public Cookie(Path cookieJar) {
-        this.cookieJar = cookieJar;
-        this.cookieStore = loadCookies();
+    public Cookie(Path cookieJarPath) {
+        this.cookieJarPath = cookieJarPath;
+        this.cookieJar = loadCookies();
     }
 
     protected ArrayList<String> loadCookies() {
@@ -21,7 +21,7 @@ public class Cookie {
         String item;
         ArrayList<String> cookieLoader = new ArrayList<String>();
         try {
-            BufferedReader reader = Files.newBufferedReader(cookieJar);
+            BufferedReader reader = Files.newBufferedReader(cookieJarPath);
             while ((item = reader.readLine()) != null) {
                 cookieLoader.add(item);
             }
@@ -35,7 +35,7 @@ public class Cookie {
 
     protected String getCookie() {
         // Returns a random fortune from the cookie ArrayList.
-        return cookieStore.get(ThreadLocalRandom.current().nextInt(cookieStore.size()));
+        return cookieJar.get(ThreadLocalRandom.current().nextInt(cookieJar.size()));
     }
 
 }
