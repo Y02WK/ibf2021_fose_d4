@@ -85,6 +85,7 @@ public class Client {
 
     private void testInput(InputStream inputStream) throws IOException {
         String input = this.getInput(inputStream);
+        System.out.println(input);
         this.processInput(input);
     }
 
@@ -101,6 +102,10 @@ public class Client {
                 this.fortuneMessage = receiveFromServer();
                 break;
             case "cookie-text":
+                if (this.fortuneMessage == null) {
+                    System.out.println("You have no fortune cookie. Enter 'get-cookie' to get one.");
+                    break;
+                }
                 System.out.println(fortuneMessage);
                 System.out.println("Enter 'get-cookie' to get another cookie, or enter 'close' to exit.");
                 break;

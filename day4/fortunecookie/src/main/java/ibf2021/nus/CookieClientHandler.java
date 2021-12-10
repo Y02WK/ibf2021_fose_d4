@@ -35,6 +35,7 @@ public class CookieClientHandler implements Runnable {
     }
 
     private void receiveFromClient() throws IOException {
+        String message = "";
         // get output stream from the socket
         OutputStream os = socket.getOutputStream();
         BufferedOutputStream bos = new BufferedOutputStream(os);
@@ -45,23 +46,29 @@ public class CookieClientHandler implements Runnable {
         BufferedInputStream bis = new BufferedInputStream(is);
         DataInputStream dis = new DataInputStream(bis);
         // Checks if there is anything to read
-        while (is.available() == 0) {
-            String message = dis.readUTF();
-            processRequest(dos, message);
-        }
+        // while (is.available() == 0) {
+        // String message = dis.readUTF();
+        // processRequest(dos, message);
+        // }
+        do {
+            message = dis.readUTF();
+            // processRequest(dos, message);
+        } while (processRequest(dos, message));
     }
 
-    private void processRequest(DataOutputStream dos, String request) throws IOException {
-        switch (request) {
+    private boolean processRequest(DataOutputStream dos, String request) throws IOException {
+        switch (request.trim()) {
             case "get-cookie":
                 System.out.println("Sending a random fortune cookie to the client.");
                 String response = cookieJar.getCookie();
                 sendToClient(dos, response);
-                return;
+                return true;
             case "close":
                 closeSocket();
+                return false;
             default:
                 sendToClient(dos, "Server error");
+                return false;
         }
     }
 
