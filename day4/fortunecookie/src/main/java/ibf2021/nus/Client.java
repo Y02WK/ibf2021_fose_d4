@@ -92,7 +92,7 @@ public class Client {
     private boolean processInput(String input) throws IOException {
         if (input.isBlank()) {
             System.err.println("Input cannot be blank.");
-            return false;
+            return true;
         }
 
         switch (input.toLowerCase()) {
