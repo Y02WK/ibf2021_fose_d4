@@ -45,14 +45,9 @@ public class CookieClientHandler implements Runnable {
         InputStream is = socket.getInputStream();
         BufferedInputStream bis = new BufferedInputStream(is);
         DataInputStream dis = new DataInputStream(bis);
-        // Checks if there is anything to read
-        // while (is.available() == 0) {
-        // String message = dis.readUTF();
-        // processRequest(dos, message);
-        // }
+
         do {
             message = dis.readUTF();
-            // processRequest(dos, message);
         } while (processRequest(dos, message));
     }
 
