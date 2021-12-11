@@ -56,7 +56,6 @@ public class CookieClientHandler implements Runnable {
 
         do {
             message = dis.readUTF();
-            // processRequest(dos, message);
         } while (processRequest(dos, message));
     }
 
