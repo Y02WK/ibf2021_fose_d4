@@ -37,10 +37,7 @@ public class UserPassword {
         return false;
     }
 
-    protected boolean userRegister(String usernameAndPassword) {
-        // Split combined input by "/"
-        String[] userArgs = usernameAndPassword.split("/");
-
+    protected boolean userRegister(String[] userArgs) {
         // Check if username is already registered.
         if (insecureVault.containsKey(userArgs[0])) {
             return false;
@@ -51,7 +48,7 @@ public class UserPassword {
 
         // Write to the text file
         try {
-            Files.write(vaultPath, usernameAndPassword.getBytes(), StandardOpenOption.APPEND);
+            Files.write(vaultPath, (userArgs[0] + "/" + userArgs[1]).getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.err.println("Error accessing file. Please check.");
         }

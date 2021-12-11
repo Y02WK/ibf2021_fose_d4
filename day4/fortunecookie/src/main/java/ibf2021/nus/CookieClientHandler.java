@@ -64,8 +64,7 @@ public class CookieClientHandler implements Runnable {
         Scanner scanner = new Scanner(request);
         String cmd = scanner.next();
 
-        String userArgs;
-        String[] userArray;
+        String[] userArgs;
         String response;
         switch (cmd.trim()) {
             case "get-cookie":
@@ -85,14 +84,13 @@ public class CookieClientHandler implements Runnable {
             case "login":
                 // attempts to log the user in, if unsuccessful prompts user to register
                 // get arguments from input and split by "/" to get username and password
-                userArgs = scanner.next().trim();
-                userArray = userArgs.split("/");
+                userArgs = scanner.next().trim().split("/");
 
-                if (insecureVault.userLogin(userArray[0], userArray[1])) {
+                if (insecureVault.userLogin(userArgs[0], userArgs[1])) {
                     isLogin = true;
-                    response = userArray[0] + " has been authenticated.";
+                    response = userArgs[0] + " has been authenticated.";
                 } else {
-                    response = "User " + userArray[0]
+                    response = "User " + userArgs[0]
                             + " not found. Please register in the format 'register <username>/<password>'. e.g. abc/123";
                 }
 
@@ -100,7 +98,7 @@ public class CookieClientHandler implements Runnable {
                 break;
             case "register":
                 // registers a user
-                userArgs = scanner.next().trim();
+                userArgs = scanner.next().trim().split("/");
 
                 if (insecureVault.userRegister(userArgs)) {
                     response = ("User successfully registered. Please login.");
