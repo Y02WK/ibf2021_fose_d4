@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 public class Server {
     public static void main(String[] args) throws IOException {
         Server server = new Server(8888, Path.of(
-                "src/cookie_file.txt"));
+                "src/cookie_file.txt"), "src/password.txt");
         server.startServer();
         server.startConnection();
     }
@@ -19,11 +19,13 @@ public class Server {
     private Cookie cookieJar;
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
+    private UserPassword insecureVault;
 
     // Constructor
-    public Server(int serverPort, Path cookiePath) {
+    public Server(int serverPort, Path cookiePath, String vaultPath) {
         this.serverPort = serverPort;
         this.cookieJar = new Cookie(cookiePath);
+        this.insecureVault = new UserPassword(vaultPath);
     }
 
     // starts the server
@@ -40,7 +42,7 @@ public class Server {
             Socket socket = serverSocket.accept();
             System.out.println("Connection from " + socket + "!");
             System.out.println("Sending to threadPool");
-            threadPool.execute(new CookieClientHandler(socket, cookieJar));
+            threadPool.execute(new CookieClientHandler(socket, cookieJar, insecureVault));
         }
     }
 

@@ -92,14 +92,19 @@ public class Client {
     private boolean processInput(String input) throws IOException {
         if (input.isBlank()) {
             System.err.println("Input cannot be blank.");
-            return false;
+            return true;
         }
 
         switch (input.toLowerCase()) {
             case "get-cookie":
                 this.sendToServer(input);
-                System.out.println("Getting your fortune cookie. Enter 'cookie-text' to open the cookie");
-                this.fortuneMessage = receiveFromServer();
+                String response = receiveFromServer();
+                if (response.contains("cookie-text")) {
+                    System.out.println("Getting your fortune cookie. Enter 'cookie-text' to open the cookie");
+                    this.fortuneMessage = response;
+                } else {
+                    System.out.println(response);
+                }
                 break;
             case "cookie-text":
                 if (this.fortuneMessage == null) {
@@ -114,8 +119,21 @@ public class Client {
                 this.closeSocket();
                 return false;
             default:
-                System.out.println("Command not recognized. Please enter only get-cookie or cookie-text.");
+                if (this.processLogin(input)) {
+                    this.sendToServer(input);
+                    System.out.println(receiveFromServer());
+                } else {
+                    System.out.println("Command not recognized. Please enter only get-cookie or cookie-text.");
+                }
         }
         return true;
+    }
+
+    private boolean processLogin(String input) {
+        if (input.contains("login") || input.contains("register")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -25,7 +25,8 @@ public class App {
             }
             String cookieJar = args[2];
             Path cookieJarFile = Path.of("./" + cookieJar);
-            Server server = new Server(serverPort, cookieJarFile);
+            String passwordvault = args[3];
+            Server server = new Server(serverPort, cookieJarFile, passwordvault);
             server.startServer();
             System.out.println("Server started successfully.");
             server.startConnection();
