@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Scanner;
 
 public class CookieClientHandler implements Runnable {
@@ -15,6 +17,8 @@ public class CookieClientHandler implements Runnable {
     private Cookie cookieJar;
     private UserPassword insecureVault;
     private boolean isLogin = false;
+    private final Duration timeout = Duration.ofSeconds(30);
+    private Instant starttime;
 
     // constructor
     public CookieClientHandler(Socket socket, Cookie cookieJar, UserPassword insecureVault) {
@@ -67,12 +71,15 @@ public class CookieClientHandler implements Runnable {
             case "get-cookie":
                 // sends a random fortune cookie to the client
                 if (isLogin) {
-                    System.out.println("Sending a random fortune cookie to the client.");
-                    response = "cookie-text: " + cookieJar.getCookie();
+                    if (stopWatch()) {
+                        System.out.println("Sending a random fortune cookie to the client.");
+                        response = "cookie-text: " + cookieJar.getCookie();
+                    } else {
+                        response = "User login timeout. Please login again.";
+                    }
                 } else {
-                    response = "User not logged in. Please login using <username>/<password>. e.g. abc/123";
+                    response = "User not logged in. Please login using 'login <username>/<password>'. e.g. abc/123";
                 }
-
                 sendToClient(dos, response);
                 break;
             case "login":
@@ -86,7 +93,7 @@ public class CookieClientHandler implements Runnable {
                     response = userArray[0] + " has been authenticated.";
                 } else {
                     response = "User " + userArray[0]
-                            + " not found. Please register in the format <username>/<password>. e.g. abc/123";
+                            + " not found. Please register in the format 'register <username>/<password>'. e.g. abc/123";
                 }
 
                 sendToClient(dos, response);
@@ -118,5 +125,15 @@ public class CookieClientHandler implements Runnable {
 
     private void closeSocket() throws IOException {
         socket.close();
+    }
+
+    private boolean stopWatch() {
+        if (starttime == null) {
+            starttime = Instant.now();
+            return true;
+        } else if (Duration.between(starttime, Instant.now()).compareTo(timeout) > 0) {
+            return false;
+        }
+        return true;
     }
 }
