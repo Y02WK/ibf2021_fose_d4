@@ -50,10 +50,10 @@ public class CookieClientHandler implements Runnable {
         String message = "";
         do {
             message = dis.readUTF();
-        } while (processRequest(dos, message));
+        } while (processRequest(message));
     }
 
-    private boolean processRequest(DataOutputStream dos, String request) throws IOException {
+    private boolean processRequest(String request) throws IOException {
         switch (request.trim()) {
             case "get-cookie":
                 System.out.println("Sending a random fortune cookie to the client.");
