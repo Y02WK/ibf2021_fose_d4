@@ -20,32 +20,62 @@ public class Client {
     private DataOutputStream dos;
 
     public static void main(String[] args) {
-        Client client = new Client("localhost", 8888);
+        Client client;
+        // check for valid args length
+        if (args.length != 1) {
+            System.err.println("Invalid argument length");
+            return;
+        }
+
+        // split args into two parts <host>:<port>
+        String[] argsParts = args[1].split(":");
+        if (Integer.parseInt(argsParts[1]) < 1024 && Integer.parseInt(argsParts[1]) > 65535) {
+            System.err.println("Invalid port number.");
+            return;
+        }
+
+        // tries to initialize the client and the socket
+        try {
+            client = new Client(argsParts[0], Integer.parseInt(argsParts[1]));
+            System.out.println("Client successfully started.");
+        } catch (NumberFormatException e) {
+            System.err.println("Error. Please enter a valid integer for port.");
+            return;
+        } catch (UnknownHostException e) {
+            System.err.println(
+                    "Error. Unable to connect to the server. Please check if host and port are valid.");
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // starts the client input loop
         try {
             client.start(System.in);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error. Please run the client again.");
         }
     }
 
-    public Client(String serverAddress, int serverPort) {
+    public Client(String serverAddress, int serverPort) throws IOException, UnknownHostException {
+        // init new Client and attempts to open the socket and init streams
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
-        try {
-            openSocket();
-            initStreams();
-        } catch (UnknownHostException e) {
-            System.err.println("Error. Unable to connect to the server. Please check if the host and port are valid.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        openSocket();
+        initStreams();
     }
 
     public void start(InputStream inputStream) throws IOException {
+        // starts the client input loop
+        // if not System.in, calls testInput method instead of starting the loop (for
+        // testing)
         if (inputStream != System.in) {
             this.testInput(inputStream);
         } else {
             System.out.println("Loading...");
+            // check if server is currently processing this client
             if (serverHandshake()) {
                 System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
                 while (true) {
@@ -65,6 +95,8 @@ public class Client {
     }
 
     private boolean serverHandshake() throws IOException {
+        // one-sided handshake to check if server has begun processing this client in
+        // threadpool
         String handshake = receiveFromServer();
         if (handshake.equals("cookiecrumbles")) {
             return true;
@@ -105,12 +137,14 @@ public class Client {
     }
 
     private void testInput(InputStream inputStream) throws IOException {
+        // input method for testing purposes only
         String input = this.getInput(inputStream);
         System.out.println(input);
         this.processInput(input);
     }
 
     private boolean processInput(String input) throws IOException {
+        // processes the input accordingly
         if (input.isBlank()) {
             System.err.println("Input cannot be blank.");
             return true;
