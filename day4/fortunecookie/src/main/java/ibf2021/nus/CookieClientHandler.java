@@ -55,7 +55,7 @@ public class CookieClientHandler implements Runnable {
         switch (request.trim()) {
             case "get-cookie":
                 System.out.println("Sending a random fortune cookie to the client.");
-                String response = cookieJar.getCookie();
+                String response = "cookie-text " + cookieJar.getCookie();
                 sendToClient(dos, response);
                 return true;
             case "close":
