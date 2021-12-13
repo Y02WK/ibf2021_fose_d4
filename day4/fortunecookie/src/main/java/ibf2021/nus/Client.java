@@ -28,7 +28,7 @@ public class Client {
         }
 
         // split args into two parts <host>:<port>
-        String[] argsParts = args[1].split(":");
+        String[] argsParts = args[0].split(":");
         if (Integer.parseInt(argsParts[1]) < 1024 && Integer.parseInt(argsParts[1]) > 65535) {
             System.err.println("Invalid port number.");
             return;
