@@ -1,12 +1,13 @@
 package ibf2021.nus;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -15,49 +16,59 @@ public class Client {
     private String serverAddress;
     private Socket socket;
     private String fortuneMessage;
+    private DataInputStream dis;
+    private DataOutputStream dos;
 
     public Client(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
         try {
             openSocket();
+            initStreams();
         } catch (UnknownHostException e) {
             System.err.println("Error. Unable to connect to the server. Please check if the host and port are valid.");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void start(InputStream inputStream) throws IOException {
         if (inputStream != System.in) {
             this.testInput(inputStream);
         } else {
-            System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
-            while (true) {
-                String input = this.getInput(inputStream);
-                if (!this.processInput(input.trim())) {
-                    return;
+            if (serverHandshake()) {
+                System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
+                while (true) {
+                    String input = this.getInput(inputStream);
+                    if (!this.processInput(input.trim())) {
+                        return;
+                    }
                 }
             }
         }
     }
 
-    private String receiveFromServer() throws IOException {
-        // get input stream from the socket
-        InputStream is = socket.getInputStream();
-        DataInputStream dis = new DataInputStream(is);
+    private void initStreams() throws IOException {
+        // get input and output streams
+        dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+    }
 
+    private boolean serverHandshake() throws IOException {
+        String handshake = receiveFromServer();
+        if (handshake.equals("cookiecrumbles")) {
+            return true;
+        }
+        return false;
+    }
+
+    private String receiveFromServer() throws IOException {
         // read the response from server
         String response = dis.readUTF();
         return response;
     }
 
     private void sendToServer(String message) throws IOException {
-        // get output stream from the connected socket
-        OutputStream os = socket.getOutputStream();
-        DataOutputStream dos = new DataOutputStream(os);
-
         // write message
         dos.writeUTF(message);
         dos.flush();

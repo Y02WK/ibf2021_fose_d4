@@ -5,13 +5,13 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
 public class CookieClientHandler implements Runnable {
     private Socket socket;
     private Cookie cookieJar;
+    private DataOutputStream dos;
+    private DataInputStream dis;
 
     // constructor
     public CookieClientHandler(Socket socket, Cookie cookieJar) {
@@ -22,30 +22,32 @@ public class CookieClientHandler implements Runnable {
     @Override
     public void run() {
         try {
+            initStreams();
+            sendToClient("cookiecrumbles");
+        } catch (IOException e1) {
+            System.err.println("Unable to initialize streams");
+        }
+
+        try {
             receiveFromClient();
         } catch (IOException e) {
             System.err.println("Client " + socket + " has disconnected.");
-            ;
         }
     }
 
-    private void sendToClient(DataOutputStream dos, String message) throws IOException {
-        dos.writeUTF(message);
-        dos.flush();
+    private void initStreams() throws IOException {
+        this.dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        return;
+    }
+
+    private void sendToClient(String message) throws IOException {
+        this.dos.writeUTF(message);
+        this.dos.flush();
     }
 
     private void receiveFromClient() throws IOException {
         String message = "";
-        // get output stream from the socket
-        OutputStream os = socket.getOutputStream();
-        BufferedOutputStream bos = new BufferedOutputStream(os);
-        DataOutputStream dos = new DataOutputStream(bos);
-
-        // get input stream from the socket
-        InputStream is = socket.getInputStream();
-        BufferedInputStream bis = new BufferedInputStream(is);
-        DataInputStream dis = new DataInputStream(bis);
-
         do {
             message = dis.readUTF();
         } while (processRequest(dos, message));
@@ -56,13 +58,13 @@ public class CookieClientHandler implements Runnable {
             case "get-cookie":
                 System.out.println("Sending a random fortune cookie to the client.");
                 String response = cookieJar.getCookie();
-                sendToClient(dos, response);
+                sendToClient(response);
                 return true;
             case "close":
                 closeSocket();
                 return false;
             default:
-                sendToClient(dos, "Server error");
+                sendToClient("Server error");
                 return false;
         }
     }
