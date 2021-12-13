@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "java",
             "name": "Launch Current File",
@@ -35,6 +36,10 @@
         {
             "name": "Server/Client",
             "configurations": ["Launch Server", "Launch Client"]
+        },
+        {
+            "name": "1 Server/4 Clients",
+            "configurations": ["Launch Server", "Launch Client", "Launch Client", "Launch Client"]
         }
     ]
 }
