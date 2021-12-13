@@ -6,9 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UserPassword {
-    private HashMap<String, String> insecureVault = new HashMap<String, String>();
+    private Map<String, String> insecureVault = new HashMap<String, String>();
     private Path vaultPath;
 
     public UserPassword(String vaultPath) {

@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cookie {
     private Path cookieJarPath;
-    private ArrayList<String> cookieJar;
+    private List<String> cookieJar;
 
     public Cookie(Path cookieJarPath) {
         this.cookieJarPath = cookieJarPath;
