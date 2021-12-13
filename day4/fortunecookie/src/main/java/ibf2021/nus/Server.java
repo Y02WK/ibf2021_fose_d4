@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static void main(String[] args) throws IOException {
+        // takes two arguments from the command line to init server <port number>
+        // <cookie_file.txt>
         // check for correct number of arguments
         if (args.length != 2) {
             System.err.println("Invalid argument length");
