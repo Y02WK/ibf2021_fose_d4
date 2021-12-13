@@ -128,7 +128,7 @@ public class Client {
                     System.out.println("You have no fortune cookie. Enter 'get-cookie' to get one.");
                     break;
                 }
-                System.out.println(fortuneMessage);
+                System.out.println(fortuneMessage.substring(12));
                 System.out.println("Enter 'get-cookie' to get another cookie, or enter 'close' to exit.");
                 break;
             case "close":
