@@ -19,6 +19,16 @@ public class Client {
     private DataInputStream dis;
     private DataOutputStream dos;
 
+    public static void main(String[] args) {
+        Client client = new Client("localhost", 8888);
+        try {
+            client.start(System.in);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     public Client(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
@@ -36,6 +46,7 @@ public class Client {
         if (inputStream != System.in) {
             this.testInput(inputStream);
         } else {
+            System.out.println("Loading...");
             if (serverHandshake()) {
                 System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
                 while (true) {
