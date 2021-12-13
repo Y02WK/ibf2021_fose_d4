@@ -9,8 +9,21 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static void main(String[] args) throws IOException {
-        Server server = new Server(8888, Path.of(
-                "src/cookie_file.txt"));
+        // check for correct number of arguments
+        if (args.length != 2) {
+            System.err.println("Invalid argument length");
+            return;
+        }
+
+        // check for valid port number
+        int serverPort = Integer.parseInt(args[0]);
+        if (serverPort < 1024 && serverPort > 65535) {
+            System.err.println("Invalid port number.");
+            return;
+        }
+
+        Path cookieJarFile = Path.of(args[1]);
+        Server server = new Server(serverPort, cookieJarFile);
         server.startServer();
         server.startConnection();
     }
