@@ -15,7 +15,11 @@ public class ClientTest {
 
     @Before
     public void setUp() {
-        client1 = new Client("localhost", 8888);
+        try {
+            client1 = new Client("localhost", 8888);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
     }
