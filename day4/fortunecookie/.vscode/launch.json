@@ -23,14 +23,16 @@
             "name": "Launch Client",
             "request": "launch",
             "mainClass": "ibf2021.nus.Client",
-            "projectName": "fortunecookie"
+            "projectName": "fortunecookie",
+            "args": "localhost:8888"
         },
         {
             "type": "java",
             "name": "Launch Server",
             "request": "launch",
             "mainClass": "ibf2021.nus.Server",
-            "projectName": "fortunecookie"
+            "projectName": "fortunecookie",
+            "args": "8888 src/cookie_file.txt"
         }
     ], "compounds": [
         {
