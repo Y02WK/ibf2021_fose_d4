@@ -80,7 +80,7 @@ public class Client {
                 System.out.println("Welcome. Enter 'get-cookie' to get a fortune cookie!");
                 while (true) {
                     String input = this.getInput(inputStream);
-                    if (!this.processInput(input.trim())) {
+                    if (!this.processInput(input.strip())) {
                         return;
                     }
                 }

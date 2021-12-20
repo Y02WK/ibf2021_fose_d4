@@ -54,7 +54,7 @@ public class CookieClientHandler implements Runnable {
     }
 
     private boolean processRequest(String request) throws IOException {
-        switch (request.trim()) {
+        switch (request.strip()) {
             case "get-cookie":
                 System.out.println("Sending a random fortune cookie to the client.");
 
